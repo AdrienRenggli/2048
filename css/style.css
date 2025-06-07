@@ -1,12 +1,26 @@
+#grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  
+  /* Make the grid square and responsive */
+  width: 90vw;
+  max-width: 400px;
+  aspect-ratio: 1 / 1;
+  
+  margin: 20px auto;
+  gap: 10px;
+}
+
 body {
     font-family: Arial, sans-serif;
     text-align: center;
     background-color: #faf8ef;
     margin: 0;
-    padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
 h1 {
@@ -15,7 +29,8 @@ h1 {
 }
 
 .container {
-    width: 450px;
+    width: auto;
+    height: auto;
     margin: 0 auto;
     padding: 10px;
     background-color: #bbada0;
@@ -28,17 +43,21 @@ h1 {
     grid-template-rows: repeat(4, 100px);
     gap: 10px;
     margin: 20px auto;
-    justify-content: center; /* Ensure grid items are centered inside the container */
+    justify-content: center;
 }
 
 .cell {
-    background-color: #cdc1b4;
-    border-radius: 3px;
+    background-color: #cdc1b4; /* default color */
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 35px;
+    font-size: clamp(18px, 6vw, 36px);
+    border-radius: 8px;
     font-weight: bold;
+    user-select: none;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    height: 100%;
     color: #776e65;
 }
 
