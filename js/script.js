@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showGameOver() {
         const gameOverDiv = document.getElementById('gameOverMessage');
-        gameOverDiv.style.display = 'block';
+        gameOverDiv.style.display = 'flex';
     }
 
     function hideGameOver() {
