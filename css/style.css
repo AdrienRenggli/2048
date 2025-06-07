@@ -127,3 +127,9 @@ h1 {
 #resetButton:hover {
   background-color: #e05a4f;
 }
+
+footer {
+    margin-top: 2rem; 
+    text-align: center; 
+    font-size: 0.9em;
+}
