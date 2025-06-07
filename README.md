@@ -2,7 +2,7 @@
 
 A simple, responsive 2048 game implemented in JavaScript, HTML, and CSS. Supports keyboard and touch controls with smooth animations and a clean UI.
 
-## Features
+## Features
 
 - Classic 2048 gameplay on a 4x4 grid.
 - Keyboard controls (arrow keys).
