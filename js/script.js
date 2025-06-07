@@ -31,6 +31,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (emptyCells.length > 0) {
             const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
             board[randomCell.i][randomCell.j] = Math.random() < 0.9 ? 2 : 4;
+
+            // Trigger animation
+            const cellEl = document.getElementById(`cell-${randomCell.i}-${randomCell.j}`);
+            cellEl.classList.add('pop');
+
+            // Remove the class after animation ends so it can be triggered again
+            setTimeout(() => {
+                cellEl.classList.remove('pop');
+            }, 200);
         }
     }
 

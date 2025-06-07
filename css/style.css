@@ -73,3 +73,18 @@ h1 {
     margin: 20px auto;
     justify-content: center; /* Ensure grid items are centered inside the container */
 }
+
+@keyframes pop {
+    0% {
+        transform: scale(0.5);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.cell.pop {
+    animation: pop 0.2s ease-in-out;
+}
