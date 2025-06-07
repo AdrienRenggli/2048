@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
         addRandomTile();
         addRandomTile();
         updateBoard();
+        hideGameOver();
     }
 
     function addRandomTile() {
@@ -30,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (emptyCells.length > 0) {
             const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-            board[randomCell.i][randomCell.j] = Math.random() < 0.9 ? 2 : 4;
+            board[randomCell.i][randomCell.j] = Math.random() < 0.75 ? 2 : 4;
 
             // Trigger animation
             const cellEl = document.getElementById(`cell-${randomCell.i}-${randomCell.j}`);
@@ -158,25 +159,37 @@ document.addEventListener('DOMContentLoaded', () => {
     function moveDown() {
         let moved = false;
         for (let j = 0; j < 4; j++) {
+            // Extract column from top to bottom
             let column = [];
-            for (let i = 3; i >= 0; i--) {
+            for (let i = 0; i < 4; i++) {
                 if (board[i][j] !== 0) {
                     column.push(board[i][j]);
                 }
             }
+
+            // Merge from bottom to top, so reverse it first
+            column.reverse();
+
             let newColumn = [];
-            for (let i = column.length - 1; i >= 0; i--) {
-                if (i > 0 && column[i] === column[i - 1]) {
-                    newColumn.unshift(column[i] * 2);
+            for (let i = 0; i < column.length; i++) {
+                if (i < column.length - 1 && column[i] === column[i + 1]) {
+                    newColumn.push(column[i] * 2);
                     score += column[i] * 2;
-                    i--;
+                    i++; // skip the next tile as merged
                 } else {
-                    newColumn.unshift(column[i]);
+                    newColumn.push(column[i]);
                 }
             }
+
+            // Pad zeros to have length 4
             while (newColumn.length < 4) {
-                newColumn.unshift(0);
+                newColumn.push(0);
             }
+
+            // Reverse back to top-to-bottom order
+            newColumn.reverse();
+
+            // Update board and check if moved
             for (let i = 0; i < 4; i++) {
                 if (board[i][j] !== newColumn[i]) {
                     moved = true;
@@ -187,6 +200,53 @@ document.addEventListener('DOMContentLoaded', () => {
         return moved;
     }
 
+
+    // Check if any moves are possible (to detect game over)
+    function canMove() {
+        // Check for empty cells
+        for (let i = 0; i < 4; i++) {
+            for (let j = 0; j < 4; j++) {
+                if (board[i][j] === 0) return true;
+            }
+        }
+
+        // Check horizontal merges
+        for (let i = 0; i < 4; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (board[i][j] === board[i][j + 1]) return true;
+            }
+        }
+
+        // Check vertical merges
+        for (let j = 0; j < 4; j++) {
+            for (let i = 0; i < 3; i++) {
+                if (board[i][j] === board[i + 1][j]) return true;
+            }
+        }
+
+        return false;
+    }
+
+    function showGameOver() {
+        const gameOverDiv = document.getElementById('gameOverMessage');
+        gameOverDiv.style.display = 'block';
+    }
+
+    function hideGameOver() {
+        const gameOverDiv = document.getElementById('gameOverMessage');
+        gameOverDiv.style.display = 'none';
+    }
+
+    function handleMove(moved) {
+        if (moved) {
+            addRandomTile();
+            updateBoard();
+
+            if (!canMove()) {
+                showGameOver();
+            }
+        }
+    }
 
     function handleKeyPress(e) {
         let moved = false;
@@ -204,19 +264,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 moved = moveDown();
                 break;
         }
-        if (moved) {
-            addRandomTile();
-            updateBoard();
-        }
+        handleMove(moved);
     }
 
     document.addEventListener('keydown', handleKeyPress);
-    
+
     grid.addEventListener('touchstart', handleTouchStart, false);
     grid.addEventListener('touchmove', handleTouchMove, false);
     grid.addEventListener('touchend', handleTouchEnd, false);
     grid.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
-    
+
     initBoard();
 
     let touchStartX = 0;
@@ -262,13 +319,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            if (moved) {
-                addRandomTile();
-                updateBoard();
-            }
+            handleMove(moved);
         }
 
         // Reset for next touch
         touchStartX = touchStartY = touchEndX = touchEndY = 0;
     }
+
+    document.getElementById('resetButton').addEventListener('click', () => {
+        score = 0;
+        board = Array(4).fill().map(() => Array(4).fill(0));
+        hideGameOver();
+        initBoard();
+    });
 });

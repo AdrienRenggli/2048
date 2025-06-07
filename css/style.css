@@ -80,3 +80,50 @@ h1 {
 .cell.pop {
     animation: pop 0.2s ease-in-out;
 }
+
+/* Overlay background for game over */
+#gameOverMessage {
+  position: fixed;
+  width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal box */
+#gameOverMessage > div {
+  background: #f8f8f8;
+  border-radius: 12px;
+  padding: 30px 40px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  text-align: center;
+  max-width: 320px;
+  width: 90%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Game over text */
+#gameOverMessage p {
+  font-size: 1.5rem;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+/* Restart button */
+#resetButton {
+  background-color: #ff6f61;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 25px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 10px rgba(255,111,97,0.4);
+}
+
+#resetButton:hover {
+  background-color: #e05a4f;
+}
