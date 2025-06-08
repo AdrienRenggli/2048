@@ -354,6 +354,7 @@ document.addEventListener('DOMContentLoaded', () => {
         score = 0;
         moves = 0;
         board = Array(4).fill().map(() => Array(4).fill(0));
+        timerDisplay.textContent = '00:00';
         hideGameOver();
         updateBoard();
         initBoard();
