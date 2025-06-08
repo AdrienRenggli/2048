@@ -1,7 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
     const grid = document.getElementById('grid');
     const scoreDisplay = document.getElementById('score');
+    const movesDisplay = document.getElementById('moves');
+    const timerDisplay = document.getElementById('timer');
     let score = 0;
+    let moves = 0;
+    let timer = 0;
+    let timerInterval;
     let board = Array(4).fill().map(() => Array(4).fill(0));
 
     function initBoard() {
@@ -18,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         addRandomTile();
         updateBoard();
         hideGameOver();
+        startTimer()
     }
 
     function addRandomTile() {
@@ -54,6 +60,23 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         scoreDisplay.textContent = score;
+        movesDisplay.textContent = moves++;
+    }
+
+    function startTimer() {
+        clearInterval(timerInterval);
+        timer = 0;
+        timerInterval = setInterval(() => {
+            timer++;
+            updateTimerDisplay();
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        const minutes = Math.floor(timer / 60);
+        const seconds = timer % 60;
+        const formatted = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        timerDisplay.textContent = formatted;
     }
 
     function getCellColor(value) {
@@ -230,6 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function showGameOver() {
         const gameOverDiv = document.getElementById('gameOverMessage');
         gameOverDiv.style.display = 'flex';
+        clearInterval(timerInterval);
     }
 
     function hideGameOver() {
@@ -328,8 +352,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('resetButton').addEventListener('click', () => {
         score = 0;
+        moves = 0;
         board = Array(4).fill().map(() => Array(4).fill(0));
         hideGameOver();
+        updateBoard();
         initBoard();
     });
 });
